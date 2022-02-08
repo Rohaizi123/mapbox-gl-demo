@@ -48,12 +48,12 @@
 <div id="map"></div>
 <button id="button" style="display: none;">Reset Map</button>
 <div id="menu">
-    <input type="checkbox" id="features-mada-cjnhkn" name="features-mada-cjnhkn">
-    <label for="features-mada-cjnhkn">Water Management</label><br>
     <input type="checkbox" id="featuretopoint-duz7lr" name="featuretopoint-duz7lr">
     <label for="featuretopoint-duz7lr">Farm Management</label><br>
-    <input type="checkbox" id="soil-management" name="soil-management" disabled>
-    <label for="soil-management">Soil Management</label><br>
+    <input type="checkbox" id="mada-tagging" name="soil-management">
+    <label for="mada-tagging">Soil Management</label><br>
+    <input type="checkbox" id="features-mada-cjnhkn" name="features-mada-cjnhkn" disabled>
+    <label for="features-mada-cjnhkn">Water Management</label><br>
     <input type="checkbox" id="crop-management" name="crop-management" disabled>
     <label for="crop-management">Crop Management</label><br>
     <input type="checkbox" id="weather-management" name="weather-management" disabled>
@@ -75,7 +75,6 @@
     });
 
     var el = document.createElement('div');
-    var resetMap = null;
 
     el.style.backgroundImage = 'url(marker.svg)';
     el.style.backgroundSize = '100%';
@@ -119,20 +118,22 @@
     map.on('click', 'featuretopoint-duz7lr', (e) => {
     new mapboxgl.Popup()
         .setLngLat(e.lngLat)
-        .setHTML(`<table class="table table-bordered border-primary">
-            <thead>
-                <tr>
-                    <th>Blok</th>
-                    <th>No_Plot</th>
-                    <th>Luas_ha</th>
-                    <th>Luas_kp</th>
-                    </tr>
-                </thead>
+        .setHTML(`<table class="table table-bordered">
             <tbody>
                 <tr>
-                    <td>${e.features[0].properties.Blok_}
-                    </td><td>${e.features[0].properties.No_Plot}</td>
+                    <th scope="row">Blok</th>
+                    <td>${e.features[0].properties.Blok_}</td>
+                </tr>
+                <tr>
+                    <th scope="row">No Plot</th>
+                    <td>${e.features[0].properties.No_Plot}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Luas(ha)</th>
                     <td>${e.features[0].properties.Luas_ha}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Luas(kp)</th>
                     <td>${e.features[0].properties.Luas_kp}</td>
                 </tr>
             </tbody>
@@ -140,23 +141,42 @@
         .addTo(map);
     });
 
-    map.on('click', 'features-mada-cjnhkn', (e) => {
+    map.on('click', 'mada-tagging', (e) => {
     new mapboxgl.Popup()
     .setLngLat(e.lngLat)
-    .setHTML(`<table class="table table-bordered border-primary">
-        <thead>
-            <tr>
-                <th>Blok</th>
-                <th>No_Plot</th>
-                <th>Luas_ha</th>
-            </tr>
-        </thead>
+    .setHTML(`<table class="table table-bordered">
         <tbody>
             <tr>
-                <td>${e.features[0].properties.Blok_}
-                </td>
-                <td>${e.features[0].properties.No_Plot}</td>
-                <td>${e.features[0].properties.Luas_Hektar}</td>
+                <th scope="row">CEC</th>
+                <td> - </td>
+            </tr>
+            <tr>
+                <th scope="row">FieldName</th>
+                <td>${e.features[0].properties.FieldName}</td>
+            </tr>
+            <tr>
+                <th scope="row">Kalium</th>
+                <td> - </td>
+            </tr>
+            <tr>
+                <th scope="row">OrderID</th>
+                <td>${e.features[0].properties.OrderID}</td>
+            </tr>
+            <tr>
+                <th scope="row">Phosphorus</th>
+                <td>${e.features[0].properties.Phosphorus}</td>
+            </tr>
+            <tr>
+                <th scope="row">Total N (%)</th>
+                <td> - </td>
+            </tr>
+            <tr>
+                <th scope="row">WKT</th>
+                <td>${e.features[0].properties.WKT}</td>
+            </tr>
+            <tr>
+                <th scope="row">PH</th>
+                <td>${e.features[0].properties.pH}</td>
             </tr>
         </tbody>
     </table>`)
@@ -174,10 +194,9 @@
     // ni untuk hide and show layer 
     // If these two layers were not added to the map, abort
     map.on('load', () => {
-    if (!map.getLayer('features-mada-cjnhkn') || !map.getLayer('featuretopoint-duz7lr')) {
+    if (!map.getLayer('mada-tagging') || !map.getLayer('featuretopoint-duz7lr')) {
         return;
     }
-    
 
     const layerList = document.getElementById('menu');
     const inputs = layerList.getElementsByTagName('input');
