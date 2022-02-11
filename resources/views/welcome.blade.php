@@ -36,7 +36,7 @@
 
     #menu {
         position: absolute;
-        background: #efefef;
+        background: white;
         padding: 10px;
         margin: 10px;
         font-famly: 'Open Sans', sans-serif;
@@ -48,14 +48,14 @@
 <div id="map"></div>
 <button id="button" style="display: none;">Reset Map</button>
 <div id="menu">
-    <input type="checkbox" id="featuretopoint-duz7lr" name="featuretopoint-duz7lr">
-    <label for="featuretopoint-duz7lr">Farm Management</label><br>
+    <input type="checkbox" id="mada-plot-farm" name="farm-management">
+    <label for="mada-plot-farm">Farm Management</label><br>
     <input type="checkbox" id="mada-tagging" name="soil-management">
     <label for="mada-tagging">Soil Management</label><br>
     <input type="checkbox" id="features-mada-cjnhkn" name="features-mada-cjnhkn" disabled>
     <label for="features-mada-cjnhkn">Water Management</label><br>
-    <input type="checkbox" id="crop-management" name="crop-management" disabled>
-    <label for="crop-management">Crop Management</label><br>
+    <input type="checkbox" id="technerve-7klh5wc3" name="crop-management">
+    <label for="technerve-7klh5wc3">Crop Management</label><br>
     <input type="checkbox" id="weather-management" name="weather-management" disabled>
     <label for="weather-management">Weather Management</label><br>
     <input type="checkbox" id="pest-management" name="pest-management" disabled>
@@ -114,33 +114,44 @@
     .setLngLat([ 100.527, 5.979 ])
     .addTo(map);
 
-    //demo user click data
-    map.on('click', 'featuretopoint-duz7lr', (e) => {
-    new mapboxgl.Popup()
-        .setLngLat(e.lngLat)
-        .setHTML(`<table class="table table-bordered">
+    //farm management
+    map.on('click', 'mada-plot-farm', (e) => {
+        let htmlString = `<table class="table table-bordered">
             <tbody>
                 <tr>
                     <th scope="row">Blok</th>
-                    <td>${e.features[0].properties.Blok_}</td>
+                    <td>${e.features[0].properties['Blok_']}</td>
                 </tr>
                 <tr>
                     <th scope="row">No Plot</th>
-                    <td>${e.features[0].properties.No_Plot}</td>
+                    <td>${e.features[0].properties['No_Plot']}</td>
                 </tr>
                 <tr>
                     <th scope="row">Luas(ha)</th>
-                    <td>${e.features[0].properties.Luas_ha}</td>
+                    <td>${e.features[0].properties['Luas_ha']}</td>
                 </tr>
                 <tr>
                     <th scope="row">Luas(kp)</th>
-                    <td>${e.features[0].properties.Luas_kp}</td>
+                    <td>${e.features[0].properties['Luas_kp']}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Luas(m²)</th>
+                    <td>${e.features[0].properties['Luas_m²']}</td>
                 </tr>
             </tbody>
-            </table>`)
-        .addTo(map);
+        </table>`;
+        if (e.features[0].properties['link'] != undefined) {
+            htmlString += `<a href="${e.features[0].properties['link']}" class="btn btn-primary btn-sm" tabindex="-1"
+                role="button" aria-disabled="true">Click Here
+            </a>`;
+        }
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(htmlString)
+            .addTo(map);
     });
 
+    //soil management
     map.on('click', 'mada-tagging', (e) => {
     new mapboxgl.Popup()
     .setLngLat(e.lngLat)
@@ -148,40 +159,50 @@
         <tbody>
             <tr>
                 <th scope="row">CEC</th>
-                <td> - </td>
+                <td>${e.features[0].properties['CEC (cmol(']}</td>
             </tr>
             <tr>
                 <th scope="row">FieldName</th>
-                <td>${e.features[0].properties.FieldName}</td>
+                <td>${e.features[0].properties['FieldName']}</td>
             </tr>
             <tr>
                 <th scope="row">Kalium</th>
-                <td> - </td>
+                <td>${e.features[0].properties['Kalium(exc']}</td>
             </tr>
             <tr>
                 <th scope="row">OrderID</th>
-                <td>${e.features[0].properties.OrderID}</td>
+                <td>${e.features[0].properties['OrderID']}</td>
             </tr>
             <tr>
                 <th scope="row">Phosphorus</th>
-                <td>${e.features[0].properties.Phosphorus}</td>
+                <td>${e.features[0].properties['Phosphorus']}</td>
             </tr>
             <tr>
                 <th scope="row">Total N (%)</th>
-                <td> - </td>
+                <td>${e.features[0].properties['Total N (%']}</td>
             </tr>
             <tr>
                 <th scope="row">WKT</th>
-                <td>${e.features[0].properties.WKT}</td>
+                <td>${e.features[0].properties['WKT']}</td>
             </tr>
             <tr>
                 <th scope="row">PH</th>
-                <td>${e.features[0].properties.pH}</td>
+                <td>${e.features[0].properties['pH']}</td>
             </tr>
         </tbody>
-    </table>`)
+    </table>
+    <a href="https://efallah-staging.teranerve.space/admin/soils" 
+        class="btn btn-primary btn-sm" 
+        tabindex="-1" 
+        role="button" 
+        aria-disabled="true">Click Here
+    </a>`)
     .addTo(map);
     });
+    //water management
+    //crop management/blok
+    //weather
+    //pest
 
     map.on('mouseenter', 'mada-tagging', () => {
         map.getCanvas().style.cursor = 'pointer';
@@ -194,7 +215,7 @@
     // ni untuk hide and show layer 
     // If these two layers were not added to the map, abort
     map.on('load', () => {
-    if (!map.getLayer('mada-tagging') || !map.getLayer('featuretopoint-duz7lr')) {
+    if (!map.getLayer('mada-plot-farm') || !map.getLayer('technerve-9i7vu5bk') || !map.getLayer('technerve-1d2ujxuf')) {
         return;
     }
 
