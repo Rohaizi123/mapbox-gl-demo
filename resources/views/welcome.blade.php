@@ -52,14 +52,14 @@
     <label for="mada-plot-farm">Farm Management</label><br>
     <input type="checkbox" id="mada-tagging" name="soil-management">
     <label for="mada-tagging">Soil Management</label><br>
-    <input type="checkbox" id="features-mada-cjnhkn" name="features-mada-cjnhkn" disabled>
-    <label for="features-mada-cjnhkn">Water Management</label><br>
-    <input type="checkbox" id="technerve-7klh5wc3" name="crop-management">
-    <label for="technerve-7klh5wc3">Crop Management</label><br>
-    <input type="checkbox" id="weather-management" name="weather-management" disabled>
-    <label for="weather-management">Weather Management</label><br>
-    <input type="checkbox" id="pest-management" name="pest-management" disabled>
-    <label for="pest-management">Pest Management</label><br>
+    <input type="checkbox" id="mada-water-level" name="water-management">
+    <label for="mada-water-level">Water Management</label><br>
+    <input type="checkbox" id="mada-crop-blok" name="crop-management">
+    <label for="mada-crop-blok">Crop Management</label><br>
+    <input type="checkbox" id="mada-weather" name="weather-management">
+    <label for="mada-weather">Weather Management</label><br>
+    <input type="checkbox" id="mada-pest" name="pest-management">
+    <label for="mada-pest">Pest Management</label><br>
 </div>
 @endsection
 
@@ -118,6 +118,7 @@
     map.on('click', 'mada-plot-farm', (e) => {
         let htmlString = `<table class="table table-bordered">
             <tbody>
+                <h6>Farm management</h6>
                 <tr>
                     <th scope="row">Blok</th>
                     <td>${e.features[0].properties['Blok_']}</td>
@@ -153,103 +154,162 @@
 
     //soil management
     map.on('click', 'mada-tagging', (e) => {
-    new mapboxgl.Popup()
-    .setLngLat(e.lngLat)
-    .setHTML(`<table class="table table-bordered">
-        <tbody>
-            <tr>
-                <th scope="row">CEC</th>
-                <td>${e.features[0].properties['CEC (cmol(']}</td>
-            </tr>
-            <tr>
-                <th scope="row">FieldName</th>
-                <td>${e.features[0].properties['FieldName']}</td>
-            </tr>
-            <tr>
-                <th scope="row">Kalium</th>
-                <td>${e.features[0].properties['Kalium(exc']}</td>
-            </tr>
-            <tr>
-                <th scope="row">OrderID</th>
-                <td>${e.features[0].properties['OrderID']}</td>
-            </tr>
-            <tr>
-                <th scope="row">Phosphorus</th>
-                <td>${e.features[0].properties['Phosphorus']}</td>
-            </tr>
-            <tr>
-                <th scope="row">Total N (%)</th>
-                <td>${e.features[0].properties['Total N (%']}</td>
-            </tr>
-            <tr>
-                <th scope="row">WKT</th>
-                <td>${e.features[0].properties['WKT']}</td>
-            </tr>
-            <tr>
-                <th scope="row">PH</th>
-                <td>${e.features[0].properties['pH']}</td>
-            </tr>
-        </tbody>
-    </table>
-    <a href="https://efallah-staging.teranerve.space/admin/soils" 
-        class="btn btn-primary btn-sm" 
-        tabindex="-1" 
-        role="button" 
-        aria-disabled="true">Click Here
-    </a>`)
-    .addTo(map);
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(`<table class="table table-bordered">
+                <tbody>
+                    <h6>Soil Management</h6>
+                    <tr>
+                        <th scope="row">CEC</th>
+                        <td>${e.features[0].properties['CEC (cmol(']}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">FieldName</th>
+                        <td>${e.features[0].properties['FieldName']}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Kalium</th>
+                        <td>${e.features[0].properties['Kalium(exc']}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">OrderID</th>
+                        <td>${e.features[0].properties['OrderID']}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Phosphorus</th>
+                        <td>${e.features[0].properties['Phosphorus']}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Total N (%)</th>
+                        <td>${e.features[0].properties['Total N (%']}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">WKT</th>
+                        <td>${e.features[0].properties['WKT']}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">PH</th>
+                        <td>${e.features[0].properties['pH']}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="https://efallah-staging.teranerve.space/admin/soils" 
+                class="btn btn-primary btn-sm" 
+                tabindex="-1" 
+                role="button" 
+                aria-disabled="true">Click Here
+            </a>`)
+        .addTo(map);
+    });
+    //crop management/blok
+    map.on('click', 'mada-crop-blok', (e) => {
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(`<table class="table table-bordered">
+                <tbody>
+                    <h6>Crop Management</h6>
+                    <tr>
+                        <th scope="row">Blok</th>
+                        <td>${e.features[0].properties['Blok_']}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">No Plot</th>
+                        <td>${e.features[0].properties['No_Plot']}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="${e.features[0].properties['link']}" class="btn btn-primary btn-sm" tabindex="-1" role="button"
+                aria-disabled="true">Click Here
+            </a>`)
+        .addTo(map);
     });
     //water management
-    //crop management/blok
+    map.on('click', 'mada-water-level', (e) => {
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(`<table class="table table-bordered">
+                <tbody>
+                    <h6>Water Management</h6>
+                    <tr>
+                        <th scope="row">WL</th>
+                        <td>${e.features[0].properties['WL']}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="${e.features[0].properties['link']}" class="btn btn-primary btn-sm" tabindex="-1" role="button"
+                aria-disabled="true">Click Here
+            </a>`)
+        .addTo(map);
+    });
     //weather
+    map.on('click', 'mada-weather', (e) => {
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(`<table class="table table-bordered">
+                <tbody>
+                    <h6>Weather Management</h6>
+                    <tr>
+                        <td>${e.features[0].properties['name']}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="${e.features[0].properties['link']}" class="btn btn-primary btn-sm" tabindex="-1" role="button"
+                aria-disabled="true">Click Here
+            </a>`)
+        .addTo(map);
+    });
     //pest
-
-    map.on('mouseenter', 'mada-tagging', () => {
-        map.getCanvas().style.cursor = 'pointer';
+    map.on('click', 'mada-pest', (e) => {
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(`<table class="table table-bordered">
+                <tbody>
+                    <h6>Pest Management</h6>
+                    <tr>
+                        <th scope="row">Solar Trap</th>
+                        <td>${e.features[0].properties['Solar Trap']}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="${e.features[0].properties['link']}" class="btn btn-primary btn-sm" tabindex="-1" role="button"
+                aria-disabled="true">Click Here
+            </a>`)
+        .addTo(map);
     });
 
-    map.on('mouseleave', 'mada-tagging', () => {
-        map.getCanvas().style.cursor = '';
-    });
+
+    
 
     // ni untuk hide and show layer 
     // If these two layers were not added to the map, abort
     map.on('load', () => {
-    if (!map.getLayer('mada-plot-farm') || !map.getLayer('technerve-9i7vu5bk') || !map.getLayer('technerve-1d2ujxuf')) {
-        return;
-    }
-
-    const layerList = document.getElementById('menu');
-    const inputs = layerList.getElementsByTagName('input');
-    
-    for (const input of inputs) {
-        input.onclick = (layer) => {
-            const layerId = layer.target.id;
-            const checkCondition = layer.target.checked;
-            if (checkCondition === true) {
-                map.setLayoutProperty(layerId, 'visibility', 'visible');
-            } else {
-                map.setLayoutProperty(layerId, 'visibility', 'none');
+        map.on('idle', () => {
+            if (!map.getLayer('mada-plot-farm') || 
+                !map.getLayer('technerve-9i7vu5bk') || 
+                !map.getLayer('technerve-1d2ujxuf')  ||
+                !map.getLayer('mada-tagging') ||
+                !map.getLayer('mada-water-level') ||
+                !map.getLayer('mada-crop-blok') ||
+                !map.getLayer('mada-weather') ||
+                !map.getLayer('mada-pest')
+            ) {
+                return;
             }
-        };
-    }
-    
-    // Toggle layer visibility by changing the layout object's visibility property.
-    // if (visibility === 'visible') {
-    //     map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-    //     this.className = '';
-    // } else {
-    //     this.className = 'active';
-    //     map.setLayoutProperty(
-    //         clickedLayer,
-    //         'visibility',
-    //         'visible'
-    //         );
-    //     }
-    // };
-    // const layers = document.getElementById('menu');
-    // layers.appendChild(link);
-    // }
-});
+            const layerList = document.getElementById('menu');
+            const inputs = layerList.getElementsByTagName('input');
+            
+            for (const input of inputs) {
+                input.onclick = (layer) => {
+                    const layerId = layer.target.id;
+                    const checkCondition = layer.target.checked;
+                    if (checkCondition === true) {
+                        map.setLayoutProperty(layerId, 'visibility', 'visible');
+                    } else {
+                        map.setLayoutProperty(layerId, 'visibility', 'none');
+                    }
+                };
+            }
+        });
+    });
 </script>
 @endsection
