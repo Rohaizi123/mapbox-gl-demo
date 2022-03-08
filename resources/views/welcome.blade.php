@@ -114,8 +114,14 @@
     .setLngLat([ 100.527, 5.979 ])
     .addTo(map);
 
+    const popup = new mapboxgl.Popup({
+        closeButton: true,
+        closeOnClick: true
+    });
     //farm management
-    map.on('click', 'mada-plot-farm', (e) => {
+    map.on('mouseenter', 'mada-plot-farm', (e) => {
+        map.getCanvas().style.cursor = 'pointer';
+
         let htmlString = `<table class="table table-bordered">
             <tbody>
                 <h6>Farm management</h6>
@@ -146,15 +152,17 @@
                 role="button" aria-disabled="true">Click Here
             </a>`;
         }
-        new mapboxgl.Popup()
-            .setLngLat(e.lngLat)
-            .setHTML(htmlString)
-            .addTo(map);
+        popup.setLngLat(e.lngLat).setHTML(htmlString).addTo(map);
+    });
+
+    map.on('mouseleave', 'mada-plot-farm', () => {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
     });
 
     //soil management
-    map.on('click', 'mada-tagging', (e) => {
-        new mapboxgl.Popup()
+    map.on('mouseenter', 'mada-tagging', (e) => {
+        popup
             .setLngLat(e.lngLat)
             .setHTML(`<table class="table table-bordered">
                 <tbody>
@@ -199,7 +207,11 @@
                 role="button" 
                 aria-disabled="true">Click Here
             </a>`)
-        .addTo(map);
+            .addTo(map);
+        });
+    map.on('mouseleave', 'mada-tagging', () => {
+        map.getCanvas().style.cursor = '';
+       
     });
     //crop management/blok
     map.on('click', 'mada-crop-blok', (e) => {
@@ -286,7 +298,7 @@
         map.on('idle', () => {
             if (!map.getLayer('mada-plot-farm') || 
                 !map.getLayer('technerve-9i7vu5bk') || 
-                !map.getLayer('technerve-1d2ujxuf')  ||
+                !map.getLayer('technerve-1d2ujxuf') ||
                 !map.getLayer('mada-tagging') ||
                 !map.getLayer('mada-water-level') ||
                 !map.getLayer('mada-crop-blok') ||
