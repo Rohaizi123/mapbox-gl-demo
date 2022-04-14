@@ -52,8 +52,8 @@
     <label for="mada-plot-farm">Farm Management</label><br>
     <input type="checkbox" id="mada-tagging" name="soil-management">
     <label for="mada-tagging">Soil Management</label><br>
-    <input type="checkbox" id="mada-water-level" name="water-management">
-    <label for="mada-water-level">Water Management</label><br>
+    <input type="checkbox" id="mada-water-level-v2" name="water-management">
+    <label for="mada-water-level-v2">Water Management</label><br>
     <input type="checkbox" id="mada-crop-blok" name="crop-management">
     <label for="mada-crop-blok">Crop Management</label><br>
     <input type="checkbox" id="mada-weather" name="weather-management">
@@ -67,13 +67,13 @@
 @section('scripts')
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoidGVjaG5lcnZlIiwiYSI6ImNrY3gzM294bTA1d3IyeW53bHFicjQ1Zm4ifQ.E-ac1XhmOysrRtvnYig8jA';
-        const map = new mapboxgl.Map({
+    const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/technerve/ckz2eetch006q14mdvn05ff1m?fresh=true',
         center: [100.526959, 5.979196],
         zoom: 9
     });
-
+    
     var el = document.createElement('div');
 
     el.style.backgroundImage = 'url(marker.svg)';
@@ -157,7 +157,6 @@
 
     map.on('mouseleave', 'mada-plot-farm', () => {
         map.getCanvas().style.cursor = '';
-        popup.remove();
     });
 
     //soil management
@@ -211,7 +210,6 @@
         });
     map.on('mouseleave', 'mada-tagging', () => {
         map.getCanvas().style.cursor = '';
-       
     });
     //crop management/blok
     map.on('click', 'mada-crop-blok', (e) => {
@@ -236,7 +234,7 @@
         .addTo(map);
     });
     //water management
-    map.on('click', 'mada-water-level', (e) => {
+    map.on('click', 'mada-water-level-v2', (e) => {
         new mapboxgl.Popup()
             .setLngLat(e.lngLat)
             .setHTML(`<table class="table table-bordered">
@@ -300,7 +298,7 @@
                 !map.getLayer('technerve-9i7vu5bk') || 
                 !map.getLayer('technerve-1d2ujxuf') ||
                 !map.getLayer('mada-tagging') ||
-                !map.getLayer('mada-water-level') ||
+                !map.getLayer('mada-water-level-v2') ||
                 !map.getLayer('mada-crop-blok') ||
                 !map.getLayer('mada-weather') ||
                 !map.getLayer('mada-pest')
